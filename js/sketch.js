@@ -8,6 +8,8 @@ let bg2;
 let enemies = Array();
 let primerT = 1000;
 
+let isLoopRunning = true;
+
 function preload() {
     bgImg = loadImage('./assets/bg.png');
     charImg = loadImage('./assets/rapidash.png')
@@ -29,10 +31,10 @@ function draw() {
     bg2.scroll();
 
     player.draw();
-    
-    for(let enemy of enemies){
+
+    for (let enemy of enemies) {
         enemy.draw();
-        if(player.collision(enemy)){
+        if (player.collision(enemy)) {
             noLoop();
         }
         enemy.update();
@@ -40,21 +42,51 @@ function draw() {
     player.update();
 }
 
-function keyPressed() {
-    if (keyCode === 87 || keyCode === 32) {
-        if (player.y === height - (player.h * 3)) {
-            player.jump();
-        }
-    }
-}
 
 // 
 setInterval(function () {
-    if(random(100) <= 75){
+    if (random(100) <= 75) {
         enemies.push(new Enemy(enemyImg));
     }
 }, primerT);
 
 setInterval(function () {
-    primerT = random(500,3000)
+    primerT = random(1000, 3000)
 }, 2000);
+
+
+function keyPressed() {
+    if (keyCode === 87) {
+        if (player.y === height - (player.h * 3)) {
+            player.jump();
+        }
+    }
+    // Letra C continua el juego
+    if (keyCode === 67) {
+        loop();
+    }
+    //Espacio Pausa el juego
+    if (keyCode === 32) {
+        if (isLoopRunning) {
+            noLoop();  
+            isLoopRunning = false;
+          } else {
+            loop();  
+            isLoopRunning = true;
+          }
+    }
+
+    //R reinicia el juego
+    if (keyCode === 82) {
+        location.reload();
+    }
+}
+// function keyPressed() {
+//     if (keyCode === 32) {
+//         if (loop()) {
+//             noLoop();
+//         } else {
+//             loop();
+//         }
+//     }
+// }
