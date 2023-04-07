@@ -4,13 +4,12 @@ let enemyImg;
 let player;
 let bg1;
 let bg2;
-// let enemies = [];
 let enemies = Array();
 let primerT = 1000;
-let puntaje = 1000;
 
 let isLoopRunning = true;
 let isGameRunning = true;
+let puntaje = 0;
 
 function preload() {
     bgImg = loadImage('./assets/bg.png');
@@ -23,7 +22,6 @@ function setup() {
     bg1 = new Bg(bgImg, 0)
     bg2 = new Bg(bgImg, width);
     player = new Character(charImg);
-    // enemy = new Enemy(enemyImg);
 }
 function draw() {
     if (!isLoopRunning && isGameRunning) {
@@ -60,8 +58,14 @@ function draw() {
                 text('para reiniciar preciona R', width / 2, (height / 2) + 50);
             }
             enemy.update();
+            if (player.y < enemy.y && player.x + player.w > enemy.x && player.x < enemy.x + enemy.w) {
+                console.log("El jugador saltó el obstáculo!");
+            }
         }
         player.update();
+        textSize(32);
+        fill(255);
+        text("Puntuación: " + puntaje, 50, 50);
     }
 }
 
@@ -76,6 +80,10 @@ setInterval(function () {
 setInterval(function () {
     primerT = random(1000, 3000)
 }, 2000);
+
+setInterval(function () {
+    puntaje += 1;
+}, 1000);
 
 
 function keyPressed() {
